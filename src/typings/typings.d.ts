@@ -16,7 +16,8 @@ interface Contributions {
         underline: boolean;
         bold: boolean;
         italic: boolean;
-        backgroundColor: string;
+		backgroundColor: string;
+		isRegex: boolean;
     }];
 }
 

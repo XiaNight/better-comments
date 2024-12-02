@@ -1,10 +1,10 @@
 {
-    "name": "better-comments",
-    "displayName": "Better Comments",
+    "name": "better-comments-regex",
+    "displayName": "Better Comments (support regex tags)",
     "icon": "icon.png",
     "description": "Improve your code commenting by annotating with alert, informational, TODOs, and more!",
     "version": "3.0.2",
-    "publisher": "aaron-bond",
+    "publisher": "xia-night",
     "author": {
         "name": "Aaron Bond"
     },
@@ -71,7 +71,8 @@
                             "underline": false,
                             "backgroundColor": "transparent",
                             "bold": false,
-                            "italic": false
+                            "italic": false,
+                            "isRegex": false
                         },
                         {
                             "tag": "?",
@@ -80,7 +81,8 @@
                             "underline": false,
                             "backgroundColor": "transparent",
                             "bold": false,
-                            "italic": false
+                            "italic": false,
+                            "isRegex": false
                         },
                         {
                             "tag": "//",
@@ -89,7 +91,8 @@
                             "underline": false,
                             "backgroundColor": "transparent",
                             "bold": false,
-                            "italic": false
+                            "italic": false,
+                            "isRegex": false
                         },
                         {
                             "tag": "todo",
@@ -98,7 +101,8 @@
                             "underline": false,
                             "backgroundColor": "transparent",
                             "bold": false,
-                            "italic": false
+                            "italic": false,
+                            "isRegex": false
                         },
                         {
                             "tag": "*",
@@ -107,7 +111,8 @@
                             "underline": false,
                             "backgroundColor": "transparent",
                             "bold": false,
-                            "italic": false
+                            "italic": false,
+                            "isRegex": false
                         }
                     ]
                 }

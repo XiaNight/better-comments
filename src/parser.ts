@@ -33,7 +33,6 @@ export class Parser {
      * @param configuration 
      */
     public constructor(config: Configuration) {
-
         this.configuration = config;
 
         this.setTags();
@@ -76,29 +75,28 @@ export class Parser {
      * @param activeEditor The active text editor containing the code document
      */
     public FindSingleLineComments(activeEditor: vscode.TextEditor): void {
-
         // If highlight single line comments is off, single line comments are not supported for this language
         if (!this.highlightSingleLineComments) return;
 
         let text = activeEditor.document.getText();
 
-        // if it's plain text, we have to do mutliline regex to catch the start of the line with ^
-        let regexFlags = (this.isPlainText) ? "igm" : "ig";
+        // if it"s plain text, we have to do mutliline regex to catch the start of the line with ^
+        let regexFlags = this.isPlainText ? "igm" : "ig";
         let regEx = new RegExp(this.expression, regexFlags);
 
         let match: any;
-        while (match = regEx.exec(text)) {
+        while ((match = regEx.exec(text))) {
             let startPos = activeEditor.document.positionAt(match.index);
             let endPos = activeEditor.document.positionAt(match.index + match[0].length);
             let range = { range: new vscode.Range(startPos, endPos) };
 
-            // Required to ignore the first line of .py files (#61)
+            // Required to ignore the /first line of .py files (#61)
             if (this.ignoreFirstLine && startPos.line === 0 && startPos.character === 0) {
                 continue;
             }
 
             // Find which custom delimiter was used in order to add it to the collection
-            let matchTag = this.tags.find(item => item.tag.toLowerCase() === match[3].toLowerCase());
+            let matchTag = this.tags.find((item) => item.tag.toLowerCase() === match[3].toLowerCase());
 
             if (matchTag) {
                 matchTag.ranges.push(range);
@@ -111,10 +109,9 @@ export class Parser {
      * @param activeEditor The active text editor containing the code document
      */
     public FindBlockComments(activeEditor: vscode.TextEditor): void {
-
-        // If highlight multiline is off in package.json or doesn't apply to his language, return
+        // If highlight multiline is off in package.json or doesn"t apply to his language, return
         if (!this.highlightMultilineComments) return;
-        
+
         let text = activeEditor.document.getText();
 
         // Build up regex matcher for custom delimiter tags
@@ -140,19 +137,19 @@ export class Parser {
 
         // Find the multiline comment block
         let match: any;
-        while (match = regEx.exec(text)) {
+        while ((match = regEx.exec(text))) {
             let commentBlock = match[0];
 
             // Find the line
             let line;
-            while (line = commentRegEx.exec(commentBlock)) {
+            while ((line = commentRegEx.exec(commentBlock))) {
                 let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
                 let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
                 let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
 
                 // Find which custom delimiter was used in order to add it to the collection
                 let matchString = line[3] as string;
-                let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
+                let matchTag = this.tags.find((item) => item.tag.toLowerCase() === matchString.toLowerCase());
 
                 if (matchTag) {
                     matchTag.ranges.push(range);
@@ -166,8 +163,7 @@ export class Parser {
      * @param activeEditor The active text editor containing the code document
      */
     public FindJSDocComments(activeEditor: vscode.TextEditor): void {
-
-        // If highlight multiline is off in package.json or doesn't apply to his language, return
+        // If highlight multiline is off in package.json or doesn"t apply to his language, return
         if (!this.highlightMultilineComments && !this.highlightJSDoc) return;
 
         let text = activeEditor.document.getText();
@@ -189,19 +185,19 @@ export class Parser {
 
         // Find the multiline comment block
         let match: any;
-        while (match = regEx.exec(text)) {
+        while ((match = regEx.exec(text))) {
             let commentBlock = match[0];
 
             // Find the line
             let line;
-            while (line = commentRegEx.exec(commentBlock)) {
+            while ((line = commentRegEx.exec(commentBlock))) {
                 let startPos = activeEditor.document.positionAt(match.index + line.index + line[2].length);
                 let endPos = activeEditor.document.positionAt(match.index + line.index + line[0].length);
                 let range: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos) };
 
                 // Find which custom delimiter was used in order to add it to the collection
                 let matchString = line[3] as string;
-                let matchTag = this.tags.find(item => item.tag.toLowerCase() === matchString.toLowerCase());
+                let matchTag = this.tags.find((item) => item.tag.toLowerCase() === matchString.toLowerCase());
 
                 if (matchTag) {
                     matchTag.ranges.push(range);
@@ -226,7 +222,7 @@ export class Parser {
     //#region  Private Methods
 
     /**
-     * Sets the comment delimiter [//, #, --, '] of a given language
+     * Sets the comment delimiter [//, #, --, "] of a given language
      * @param languageCode The short code of the current language
      * https://code.visualstudio.com/docs/languages/identifiers
      */
@@ -259,7 +255,7 @@ export class Parser {
             case "tcl":
                 this.ignoreFirstLine = true;
                 break;
-            
+
             case "plaintext":
                 this.isPlainText = true;
 
@@ -283,11 +279,11 @@ export class Parser {
             if (item.strikethrough) {
                 options.textDecoration += "line-through";
             }
-            
+
             if (item.underline) {
                 options.textDecoration += " underline";
             }
-            
+
             if (item.bold) {
                 options.fontWeight = "bold";
             }
@@ -296,12 +292,21 @@ export class Parser {
                 options.fontStyle = "italic";
             }
 
-            let escapedSequence = item.tag.replace(/([()[{*+.$^\\|?])/g, '\\$1');
+            let isRegex = false;
+            if (item.isRegex) {
+                isRegex = item.isRegex;
+            }
+
+            let escapedSequence = item.tag;
+            if (!isRegex) {
+                escapedSequence = item.tag.replace(/([()[{*+.$^\\|?])/g, "\\$1");
+            }
+
             this.tags.push({
                 tag: item.tag,
                 escapedTag: escapedSequence.replace(/\//gi, "\\/"), // ! hardcoded to escape slashes
                 ranges: [],
-                decoration: vscode.window.createTextEditorDecorationType(options)
+                decoration: vscode.window.createTextEditorDecorationType(options),
             });
         }
     }
@@ -312,7 +317,7 @@ export class Parser {
      * @returns {string} The escaped string
      */
     private escapeRegExp(input: string): string {
-        return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+        return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
     }
 
     /**
@@ -322,28 +327,24 @@ export class Parser {
      * @param end The end delimiter for block comments
      */
     private setCommentFormat(
-            singleLine: string | string[] | null,
-            start: string | null = null,
-            end: string | null = null): void {
-
+        singleLine: string | string[] | null,
+        start: string | null = null,
+        end: string | null = null,
+    ): void {
         this.delimiter = "";
         this.blockCommentStart = "";
         this.blockCommentEnd = "";
 
         // If no single line comment delimiter is passed, single line comments are not supported
         if (singleLine) {
-            if (typeof singleLine === 'string') {
-                this.delimiter = this.escapeRegExp(singleLine).replace(/\//ig, "\\/");
-            }
-            else if (singleLine.length > 0) {
+            if (typeof singleLine === "string") {
+                this.delimiter = this.escapeRegExp(singleLine).replace(/\//gi, "\\/");
+            } else if (singleLine.length > 0) {
                 // * if multiple delimiters are passed, the language has more than one single line comment format
-                var delimiters = singleLine
-                            .map(s => this.escapeRegExp(s))
-                            .join("|");
+                var delimiters = singleLine.map((s) => this.escapeRegExp(s)).join("|");
                 this.delimiter = delimiters;
             }
-        }
-        else {
+        } else {
             this.highlightSingleLineComments = false;
         }
 

@@ -1,3 +1,10 @@
+# Better Comments Regex
+* Fork from the [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments) extension.
+* Add support for regex patterns in the tags.
+* Simply add a `isRegex` property to the tag object and set it to `true`.
+
+![Regex Tag Example](images/regex_tag_example.PNG)
+
 # Better Comments
 
 The Better Comments extension will help you create more human-friendly comments in your code.  
