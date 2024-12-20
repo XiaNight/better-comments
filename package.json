@@ -3,8 +3,8 @@
     "displayName": "Better Comments (support regex tags)",
     "icon": "icon.png",
     "description": "Improve your code commenting by annotating with alert, informational, TODOs, and more!",
-    "version": "3.0.2",
-    "publisher": "xia-night",
+    "version": "3.0.4",
+    "publisher": "xianight",
     "author": {
         "name": "Aaron Bond"
     },
@@ -12,12 +12,12 @@
     "license": "SEE LICENSE IN LICENSE.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/aaron-bond/better-comments"
+        "url": "https://github.com/XiaNight/better-comments/"
     },
     "sponsor": {
         "url": "https://github.com/sponsors/aaron-bond"
     },
-    "bugs": "https://github.com/aaron-bond/better-comments/issues",
+    "bugs": "https://github.com/XiaNight/better-comments/",
     "categories": [
         "Formatters"
     ],
@@ -132,7 +132,6 @@
         "tslint": "^6.1.3",
         "typescript": "^4.6.3",
         "util": "^0.12.4",
-        "vsce": "^2.10.0",
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0"
     }

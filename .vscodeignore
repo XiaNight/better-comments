@@ -3,9 +3,9 @@
 out/test/**
 test/**
 src/**
-images/**
 **/*.map
 .gitignore
 tsconfig.json
 npm-debug.log
 .travis.yml
+package-lock.json

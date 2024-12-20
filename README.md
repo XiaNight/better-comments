@@ -2,8 +2,31 @@
 * Fork from the [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments) extension.
 * Add support for regex patterns in the tags.
 * Simply add a `isRegex` property to the tag object and set it to `true`.
+* Whole line tags can be added by setting the `isWholeLine` property to `true`.
 
-![Regex Tag Example](images/regex_tag_example.PNG)
+# Regex Tag Example
+An example of highlighting a markdown list with light yellow color.
+```json
+{
+	"tag": "\\d+ ?\\.",
+	"color": "#999900",
+	"isRegex": true,
+},
+```
+
+# Whole Line Tag Example
+An example of a divider made by a line of dashes.
+Makes the entire line a gray color. (applies after the whitespace after the line text)
+```json
+{
+	"tag": "-{5,}",
+	"color": "#000000",
+	"backgroundColor": "#666666",
+	"isRegex": true,
+	"isWholeLine": true,
+},
+```
+
 
 # Better Comments
 
